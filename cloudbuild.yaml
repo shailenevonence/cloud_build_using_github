@@ -4,17 +4,18 @@ steps:
     args:
       - '-c'
       - |
-        echo "$_INSTANCE_NAME" > /root/instance_name
         echo "$_EXTERNAL_IP" > /root/external_ip
         echo "$_SSH_PRIVATE_KEY" > /root/.ssh/id_rsa
         chmod 600 /root/.ssh/id_rsa
-        gcloud compute scp --recurse ./app "$(cat /root/instance_name)":~/app --zone="$(cat /root/zone)" --ssh-key-file=/root/.ssh/id_rsa
-        gcloud compute ssh "$(cat /root/instance_name)" --zone="$(cat /root/zone)" --command "sudo systemctl restart my-flask-app"
+        gcloud compute scp --recurse ./app "$(cat /root/external_ip)":~/app --zone="$(cat /root/zone)" --ssh-key-file=/root/.ssh/id_rsa
+        gcloud compute ssh "$(cat /root/external_ip)" --zone="$(cat /root/zone)" --command "sudo systemctl restart my-flask-app"
 options:
   logging: CLOUD_LOGGING_ONLY
 secrets:
   - kmsKeyName: projects/<your-project-id>/locations/global/keyRings/<your-key-ring>/cryptoKeys/<your-key>
-    secretEnv:
-      INSTANCE_NAME: ''
-      EXTERNAL_IP: ''
-      SSH_PRIVATE_KEY: ''
+availableSecrets:
+  secretManager:
+    - versionName: projects/<your-project-id>/secrets/EXTERNAL_IP/versions/latest
+      env: '_EXTERNAL_IP'
+  secretEnv:
+    _SSH_PRIVATE_KEY: ''
