@@ -15,6 +15,6 @@ options:
 secrets:
   - kmsKeyName: projects/<your-project-id>/locations/global/keyRings/<your-key-ring>/cryptoKeys/<your-key>
     secretEnv:
-      _INSTANCE_NAME: ''
-      _EXTERNAL_IP: ''
-      _SSH_PRIVATE_KEY: ''
+      INSTANCE_NAME: ''
+      EXTERNAL_IP: ''
+      SSH_PRIVATE_KEY: ''
