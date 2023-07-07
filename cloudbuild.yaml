@@ -6,3 +6,5 @@ steps:
       - |
         gcloud compute scp --recurse ./app $USER_NAME@$(cat $GITHUB_WORKSPACE/secrets/EXTERNAL_IP):~/$INSTANCE_NAME --zone=$(cat $GITHUB_WORKSPACE/secrets/ZONE)
         gcloud compute ssh $USER_NAME@$(cat $GITHUB_WORKSPACE/secrets/EXTERNAL_IP) --zone=$(cat $GITHUB_WORKSPACE/secrets/ZONE) --command "sudo systemctl restart my-flask-app"
+options:
+  logging: CLOUD_LOGGING_ONLY
