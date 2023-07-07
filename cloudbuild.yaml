@@ -4,7 +4,9 @@ steps:
     args:
       - '-c'
       - |
-        gcloud compute scp --recurse ./app $${_USERNAME}@$(cat $GITHUB_WORKSPACE/secrets/EXTERNAL_IP):~/$${_INSTANCE_NAME} --zone=$(cat $GITHUB_WORKSPACE/secrets/ZONE)
+        echo "$$SSH_PRIVATE_KEY" > /root/.ssh/id_rsa
+        chmod 600 /root/.ssh/id_rsa
+        gcloud compute scp --recurse ./app $${_USERNAME}@$(cat $GITHUB_WORKSPACE/secrets/EXTERNAL_IP):~/$${_INSTANCE_NAME} --zone=$(cat $GITHUB_WORKSPACE/secrets/ZONE) --ssh-key-file=/root/.ssh/id_rsa
         gcloud compute ssh $${_USERNAME}@$(cat $GITHUB_WORKSPACE/secrets/EXTERNAL_IP) --zone=$(cat $GITHUB_WORKSPACE/secrets/ZONE) --command "sudo systemctl restart my-flask-app"
 options:
   logging: CLOUD_LOGGING_ONLY
