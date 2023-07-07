@@ -17,5 +17,3 @@ availableSecrets:
   secretManager:
     - versionName: projects/<your-project-id>/secrets/EXTERNAL_IP/versions/latest
       env: '_EXTERNAL_IP'
-  secretEnv:
-    _SSH_PRIVATE_KEY: ''
