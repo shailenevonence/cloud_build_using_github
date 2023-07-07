@@ -11,15 +11,16 @@ steps:
 options:
   logging: CLOUD_LOGGING_ONLY
 secrets:
-  - secretManager:
-      projectId: <your-project-id>
-      secrets:
-        - versionName: projects/<your-project-id>/secrets/EXTERNAL_IP/versions/latest
-          env: 'external_ip'
-        - versionName: projects/<your-project-id>/secrets/INSTANCE_NAME/versions/latest
-          env: 'instance_name'
-        - versionName: projects/<your-project-id>/secrets/ZONE/versions/latest
-          env: 'zone'
   - kmsKeyName: projects/<your-project-id>/locations/global/keyRings/<your-key-ring>/cryptoKeys/<your-key>
     secretEnv:
       _USERNAME: ''
+      _INSTANCE_NAME: ''
+      _ZONE: ''
+availableSecrets:
+  secretManager:
+    - versionName: projects/<your-project-id>/secrets/EXTERNAL_IP/versions/latest
+      env: 'external_ip'
+    - versionName: projects/<your-project-id>/secrets/INSTANCE_NAME/versions/latest
+      env: 'instance_name'
+    - versionName: projects/<your-project-id>/secrets/ZONE/versions/latest
+      env: 'zone'
