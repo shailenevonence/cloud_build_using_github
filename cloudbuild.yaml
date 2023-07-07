@@ -4,12 +4,14 @@ steps:
     args:
       - '-c'
       - |
-        echo "$$SSH_PRIVATE_KEY" > /root/.ssh/id_rsa
-        chmod 600 /root/.ssh/id_rsa
-        gcloud compute scp --recurse ./app $${_USERNAME}@$(cat $GITHUB_WORKSPACE/secrets/EXTERNAL_IP):~/$${_INSTANCE_NAME} --zone=$(cat $GITHUB_WORKSPACE/secrets/ZONE) --ssh-key-file=/root/.ssh/id_rsa
-        gcloud compute ssh $${_USERNAME}@$(cat $GITHUB_WORKSPACE/secrets/EXTERNAL_IP) --zone=$(cat $GITHUB_WORKSPACE/secrets/ZONE) --command "sudo systemctl restart my-flask-app"
+        echo "$_USERNAME" > /root/username
+        echo "$_INSTANCE_NAME" > /root/instance_name
+        gcloud compute scp --recurse ./app $(cat /root/username)@$(cat $GITHUB_WORKSPACE/secrets/EXTERNAL_IP):~/"$(cat /root/instance_name)" --zone=$(cat $GITHUB_WORKSPACE/secrets/ZONE) --ssh-key-file=/root/.ssh/id_rsa
+        gcloud compute ssh $(cat /root/username)@$(cat $GITHUB_WORKSPACE/secrets/EXTERNAL_IP) --zone=$(cat $GITHUB_WORKSPACE/secrets/ZONE) --command "sudo systemctl restart my-flask-app"
 options:
   logging: CLOUD_LOGGING_ONLY
-substitutions:
-  _USERNAME: $(cat $GITHUB_WORKSPACE/secrets/USER_NAME)
-  _INSTANCE_NAME: $(cat $GITHUB_WORKSPACE/secrets/INSTANCE_NAME)
+secrets:
+  - kmsKeyName: projects/<your-project>/locations/global/keyRings/<your-key-ring>/cryptoKeys/<your-key>
+    secretEnv:
+      _USERNAME: <base64-encoded-username-secret>
+      _INSTANCE_NAME: <base64-encoded-instance-name-secret>
