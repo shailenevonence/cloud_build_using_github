@@ -13,5 +13,5 @@ options:
 secrets:
   - kmsKeyName: projects/<your-project>/locations/global/keyRings/<your-key-ring>/cryptoKeys/<your-key>
     secretEnv:
-      _USERNAME: <base64-encoded-username-secret>
-      _INSTANCE_NAME: <base64-encoded-instance-name-secret>
+      _USERNAME: <username-secret>
+      _INSTANCE_NAME: <instance-name-secret>
