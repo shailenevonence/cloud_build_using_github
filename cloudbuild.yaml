@@ -1,25 +1,15 @@
 steps:
-- name: 'gcr.io/cloud-builders/gcloud'
-  entrypoint: 'bash'
-  args:
-    - '-c'
-    - |
-      gcloud compute ssh git-gcp-vm \
-      --zone=us-central1-a \
-      --project=$PROJECT_ID \
-      --command='sudo touch /testcloudbuild' \
-      --command='sudo mkdir /myapp' \
-      --command='cd /myapp' \
-      --command='sudo apt-get update' \
-      --command='sudo apt-get install -y python3-pip' \
-      --command='sudo apt-get install -y python3-venv' \
-      --command='python3 -m venv venv' \
-      --command='source venv/bin/activate' \
-      --command='pip install --upgrade pip' \
-      --command='pip install -r requirements.txt' \
-      --command='pip install gunicorn' \
-      --command='venv/bin/gunicorn app:app --bind 0.0.0.0:8080'
-  env:
-    - 'LOGGING_OPTION=CLOUD_LOGGING_ONLY'
-
-logsBucket: onramp-sample-bucket
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud compute ssh git-gcp-vm \
+        --zone=us-central1-a \
+        --project=$PROJECT_ID \
+        --command='sudo apt-get update' \
+        --command='sudo apt-get install -y apache2' \
+        --command='sudo systemctl start apache2' \
+        --command='sudo systemctl enable apache2'
+    env:
+      - 'LOGGING_OPTION=CLOUD_LOGGING_ONLY'
