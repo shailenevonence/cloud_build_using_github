@@ -7,10 +7,7 @@ steps:
       gcloud compute ssh git-gcp-vm \
       --zone=us-central1-a \
       --project=${PROJECT_ID} \
-      --command='sudo touch /testcloudbuild'
-      --command='sudo mkdir /myapp'
-      --command='cd /myapp'
-      --command='pip install -r requirements.txt & gunicorn app:app --bind 0.0.0.0:8080'
+      --command='sudo touch /testcloudbuild && sudo mkdir /myapp && cd /myapp && pip install -r requirements.txt && gunicorn app:app --bind 0.0.0.0:8080'
   env:
     - 'LOGGING_OPTION=CLOUD_LOGGING_ONLY'
 
