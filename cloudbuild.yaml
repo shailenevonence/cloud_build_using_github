@@ -8,10 +8,10 @@ steps:
         --zone=us-central1-a \
         --project=$PROJECT_ID \
         --command='sudo apt-get update' \
-        --command='sudo apt-get install -y apache2' \
+        --command='sudo apt-get install -y apache2 apache2-utils' \
         --command='sudo systemctl start apache2' \
         --command='sudo systemctl enable apache2'
     env:
-  
-    - 'LOGGING_OPTION=CLOUD_LOGGING_ONLY'
+      - 'LOGGING_OPTION=CLOUD_LOGGING_ONLY'
+
 logsBucket: onramp-sample-bucket
