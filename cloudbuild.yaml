@@ -16,7 +16,7 @@ steps:
       --command='python3 -m venv venv' \
       --command='source venv/bin/activate' \
       --command='pip install -r requirements.txt' \
-      --command='venv/bin/gunicorn app:app --bind 0.0.0.0:8080'
+      --command='python3 -m gunicorn app:app --bind 0.0.0.0:8080'
   env:
     - 'LOGGING_OPTION=CLOUD_LOGGING_ONLY'
 
