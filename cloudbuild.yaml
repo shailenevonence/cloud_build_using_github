@@ -12,4 +12,6 @@ steps:
         --command='sudo systemctl start apache2' \
         --command='sudo systemctl enable apache2'
     env:
-      - 'LOGGING_OPTION=CLOUD_LOGGING_ONLY'
+  
+    - 'LOGGING_OPTION=CLOUD_LOGGING_ONLY'
+logsBucket: onramp-sample-bucket
