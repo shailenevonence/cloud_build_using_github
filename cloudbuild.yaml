@@ -12,7 +12,11 @@ steps:
       --command='cd /myapp' \
       --command='sudo apt-get update' \
       --command='sudo apt-get install -y python3-pip' \
-      --command='pip3 install -r requirements.txt && gunicorn app:app --bind 0.0.0.0:8080'
+      --command='sudo apt-get install -y python3-venv' \
+      --command='python3 -m venv venv' \
+      --command='source venv/bin/activate' \
+      --command='pip install -r requirements.txt' \
+      --command='gunicorn app:app --bind 0.0.0.0:8080'
   env:
     - 'LOGGING_OPTION=CLOUD_LOGGING_ONLY'
 
