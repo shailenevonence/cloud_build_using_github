@@ -1,19 +1,7 @@
 steps:
-  - name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        echo "$_EXTERNAL_IP" > /root/external_ip
-        echo "$_SSH_PRIVATE_KEY" > /root/.ssh/id_rsa
-        chmod 600 /root/.ssh/id_rsa
-        gcloud compute scp --recurse ./app "$(cat /root/external_ip)":~/app --zone="$(cat /root/zone)" --ssh-key-file=/root/.ssh/id_rsa
-        gcloud compute ssh "$(cat /root/external_ip)" --zone="$(cat /root/zone)" --command "sudo systemctl restart my-flask-app"
-options:
-  logging: CLOUD_LOGGING_ONLY
-secrets:
-  - kmsKeyName: projects/<your-project-id>/locations/global/keyRings/<your-key-ring>/cryptoKeys/<your-key>
-availableSecrets:
-  secretManager:
-    - versionName: projects/<your-project-id>/secrets/EXTERNAL_IP/versions/latest
-      env: '_EXTERNAL_IP'
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['compute', 'scp', '--recurse', '--compress', '.', 'git-gcp-vm:/var/www/myapp']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['compute', 'ssh', 'git-gcp-vm', '--command=cd /var/www/myapp && pip install -r requirements.txt']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['compute', 'ssh', 'git-gcp-vm', '--command=cd /var/www/myapp && gunicorn app:app --bind 0.0.0.0:8080']
