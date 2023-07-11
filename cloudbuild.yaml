@@ -9,7 +9,7 @@ steps:
         --project=$PROJECT_ID \
         --command='sudo apt update' \
         --command='sudo apt upgrade -y' \
-        --command='sudo apt install php -y' \
+        --command='sudo apt install php -y'
     env:
       - 'LOGGING_OPTION=CLOUD_LOGGING_ONLY'
   - name: 'gcr.io/cloud-builders/git'
@@ -19,7 +19,19 @@ steps:
     args:
       - '-c'
       - |
-        rm /workspace/repo/cloudbuild.yaml
+        echo "steps:" > /workspace/repo/cloudbuild.yaml
+        echo "  - name: 'gcr.io/cloud-builders/gcloud'" >> /workspace/repo/cloudbuild.yaml
+        echo "    entrypoint: 'bash'" >> /workspace/repo/cloudbuild.yaml
+        echo "    args:" >> /workspace/repo/cloudbuild.yaml
+        echo "      - '-c'" >> /workspace/repo/cloudbuild.yaml
+        echo "      - |" >> /workspace/repo/cloudbuild.yaml
+        echo "        gcloud compute ssh git-gcp-vm \\" >> /workspace/repo/cloudbuild.yaml
+        echo "        --zone=us-central1-a \\" >> /workspace/repo/cloudbuild.yaml
+        echo "        --project=\$PROJECT_ID \\" >> /workspace/repo/cloudbuild.yaml
+        echo "        --command='sudo apt update' \\" >> /workspace/repo/cloudbuild.yaml
+        echo "        --command='sudo apt upgrade -y' \\" >> /workspace/repo/cloudbuild.yaml
+        echo "        --command='sudo apt install php -y'" >> /workspace/repo/cloudbuild.yaml
+    dir: '/workspace/repo'
   - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
     args:
