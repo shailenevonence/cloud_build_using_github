@@ -9,8 +9,8 @@ steps:
         --project=$PROJECT_ID \
         --command='sudo apt update' \
         --command='sudo apt upgrade -y' \
-        --command='sudo apt install php' \
-        --command='sudo apt install php-mysql' 
+        --command='sudo apt install php -y' \
+        --command='sudo apt install php-mysql -y' 
         env:
       - 'LOGGING_OPTION=CLOUD_LOGGING_ONLY'
 
