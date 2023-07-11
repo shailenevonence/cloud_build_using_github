@@ -10,7 +10,6 @@ steps:
         --command='sudo apt update' \
         --command='sudo apt upgrade -y' \
         --command='sudo apt install php -y' \
-        --command='sudo mkdir testfolder'
     env:
       - 'LOGGING_OPTION=CLOUD_LOGGING_ONLY'
   - name: 'gcr.io/cloud-builders/git'
