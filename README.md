@@ -38,15 +38,8 @@ To automatically trigger the CI/CD process whenever changes are pushed to the Gi
 6. In the "Build configuration" section, select "Cloud Build configuration file (yaml or json)" and enter the path to your `cloudbuild.yaml` file (usually `/cloudbuild.yaml`).
 7. Click on "Create Trigger" to save the trigger configuration.
 
-Step 3: Set up Compute Engine instance and configure SSH keys
-Ensure that you have a Compute Engine instance named `<vm_name>` in the `<zone>` zone. You also need to set up SSH keys to establish a connection between Cloud Build and the Compute Engine instance.
-
-1. Generate an SSH key pair if you haven't already. You can use the `ssh-keygen` command to generate the keys.
-2. Add the public key (`id_rsa.pub`) to the `~/.ssh/authorized_keys` file on your Compute Engine instance.
-3. In the Cloud Console, go to the Compute Engine section and navigate to your instance.
-4. Click on "Edit" for your instance and scroll down to the "SSH Keys" section.
-5. Click on "Show and edit" and paste the public key from `id_rsa.pub`.
-6. Save the changes to update the instance configuration.
+Step 3: Set up Compute Engine instance
+Ensure that you have a Compute Engine instance named `<vm_name>` in the `<zone>` zone. You don't need to set up SSH keys to establish a connection between Cloud Build and the Compute Engine instance, **cloud build does that part for you**
 
 Step 4: Grant necessary permissions to Cloud Build service account
 Cloud Build requires appropriate permissions to access and modify the Compute Engine instance.
