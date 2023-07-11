@@ -8,12 +8,10 @@ steps:
         --zone=us-central1-a \
         --project=$PROJECT_ID \
         --command='sudo apt update' \
-        --command='sudo apt-get install apache2-bin apache2-utils' \
-        --command='sudo apt update' \
         --command='sudo apt upgrade -y' \
-        --command='sudo systemctl start apache2' \
-        --command='sudo systemctl enable apache2'
-    env:
+        --command='sudo apt install php' \
+        --command='sudo apt install php-mysql' 
+        env:
       - 'LOGGING_OPTION=CLOUD_LOGGING_ONLY'
 
 logsBucket: onramp-sample-bucket
