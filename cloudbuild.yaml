@@ -10,7 +10,7 @@ steps:
         --command='sudo apt update' \
         --command='sudo apt upgrade -y' \
         --command='sudo apt install php -y' 
-        env:
+    env:
       - 'LOGGING_OPTION=CLOUD_LOGGING_ONLY'
 
 logsBucket: onramp-sample-bucket
