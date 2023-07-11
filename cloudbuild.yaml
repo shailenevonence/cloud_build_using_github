@@ -13,4 +13,20 @@ steps:
         --command='sudo mkdir testfolder'
     env:
       - 'LOGGING_OPTION=CLOUD_LOGGING_ONLY'
+  - name: 'gcr.io/cloud-builders/git'
+    args: ['clone', 'https://github.com/shailenevonence/cloud_build_using_github.git', '/workspace/repo']
+  - name: 'ubuntu'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        rm /workspace/repo/cloudbuild.yaml
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud compute scp --recurse /workspace/repo git-gcp-vm:/* \
+        --zone=us-central1-a \
+        --project=$PROJECT_ID
 logsBucket: onramp-sample-bucket
