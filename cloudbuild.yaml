@@ -8,7 +8,9 @@ steps:
         --zone=us-central1-a \
         --project=$PROJECT_ID \
         --command='sudo apt-get update' \
-        --command='sudo DEBIAN_FRONTEND=noninteractive apt-get install -y apache2' \
+        --command='sudo sudo apt install apache2' \
+        --command='sudo apt-get update' \
+        --command='sudo apt-get upgrade -y' \
         --command='sudo systemctl start apache2' \
         --command='sudo systemctl enable apache2'
     env:
