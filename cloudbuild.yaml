@@ -40,7 +40,7 @@ steps:
       - 'instances'
       - 'add-metadata'
       - 'git-gcp-vm'
-      - '--metadata=startup-script=apt update && apt install -y curl && apt-get install -y lsb-release && export CLOUD_SDK_REPO="cloud-sdk" && echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && apt-get update && apt-get install -y google-cloud-sdk'
+      - '--metadata=startup-script=apt update && apt install -y curl && apt-get install -y lsb-release && echo "deb http://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && apt-get update && apt-get install -y google-cloud-sdk'
       - '--zone=us-central1-a'
       - '--project=$PROJECT_ID'
   - name: 'gcr.io/cloud-builders/gcloud'
