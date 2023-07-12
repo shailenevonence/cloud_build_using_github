@@ -36,12 +36,12 @@ steps:
           echo "Hello World ! Unknown Branch" > /workspace/repo/app.py
         fi
         gcloud builds submit --tag gcr.io/$PROJECT_ID/my-app /workspace/repo
-  - name: 'gcr.io/cloud-builders/docker'
+  - name: 'gcr.io/cloud-builders/google-cloud-sdk'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
-        gcloud components install docker-cli
+        gcloud components install docker-credential-gcr
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
