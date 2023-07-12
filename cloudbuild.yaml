@@ -1,17 +1,4 @@
 steps:
-  - name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        gcloud compute ssh git-gcp-vm \
-        --zone=us-central1-a \
-        --project=$PROJECT_ID \
-        --command='sudo apt update' \
-        --command='sudo apt upgrade -y' \
-        --command='sudo apt install php -y'
-    env:
-      - 'LOGGING_OPTION=CLOUD_LOGGING_ONLY'
   - name: 'gcr.io/cloud-builders/git'
     args: ['clone', 'https://github.com/shailenevonence/cloud_build_using_github.git', '/workspace/repo']
   - name: 'ubuntu'
@@ -37,12 +24,6 @@ steps:
         fi
         gcloud builds submit --tag gcr.io/$PROJECT_ID/my-app /workspace/repo
   - name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        gcloud components install docker-credential-gcr
-  - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
       - '-t'
@@ -57,9 +38,9 @@ steps:
     args:
       - 'compute'
       - 'instances'
-      - 'add-tags'
+      - 'add-metadata'
       - 'git-gcp-vm'
-      - '--tags=allow-docker'
+      - '--metadata=startup-script=apt update && apt install -y curl && apt-get install -y lsb-release && export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" && echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && apt-get update && apt-get install -y google-cloud-sdk'
       - '--zone=us-central1-a'
       - '--project=$PROJECT_ID'
   - name: 'gcr.io/cloud-builders/gcloud'
