@@ -1,4 +1,17 @@
 steps:
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud compute ssh git-gcp-vm \
+        --zone=us-central1-a \
+        --project=$PROJECT_ID \
+        --command='sudo apt update' \
+        --command='sudo apt upgrade -y' \
+        --command='sudo apt install php -y'
+    env:
+      - 'LOGGING_OPTION=CLOUD_LOGGING_ONLY'
   - name: 'gcr.io/cloud-builders/git'
     args: ['clone', 'https://github.com/shailenevonence/cloud_build_using_github.git', '/workspace/repo']
   - name: 'ubuntu'
@@ -16,58 +29,13 @@ steps:
         if [ "$BRANCH_NAME" == "evonence" ]; then
           echo "Hello World ! Evonence" > /workspace/repo/app.py
         elif [ "$BRANCH_NAME" == "master" ]; then
-          echo "Hello World ! Master" > /workspace/repo/app.py
+          echo "Hello World ! master" > /workspace/repo/app.py
         elif [ "$BRANCH_NAME" == "ncorium" ]; then
           echo "Hello World ! Ncorium" > /workspace/repo/app.py
         else
           echo "Hello World ! Unknown Branch" > /workspace/repo/app.py
         fi
-        gcloud builds submit --tag gcr.io/$PROJECT_ID/my-app /workspace/repo
-  - name: 'google/cloud-sdk:alpine'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        gcloud components install docker-credential-gcr docker
-  - name: 'google/cloud-sdk:alpine'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        gcloud auth configure-docker
-  - name: 'google/cloud-sdk:alpine'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        gcloud docker -- pull gcr.io/$PROJECT_ID/my-app
-  - name: 'google/cloud-sdk:alpine'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        gcloud docker -- tag gcr.io/$PROJECT_ID/my-app gcr.io/$PROJECT_ID/my-app:latest
-  - name: 'google/cloud-sdk:alpine'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        gcloud docker -- push gcr.io/$PROJECT_ID/my-app:latest
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args:
-      - 'compute'
-      - 'instances'
-      - 'add-metadata'
-      - 'git-gcp-vm'
-      - '--metadata=startup-script=apt update && apt install -y curl && apt-get install -y lsb-release && echo "deb http://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && apt-get update && apt-get install -y google-cloud-sdk'
-      - '--zone=us-central1-a'
-      - '--project=$PROJECT_ID'
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args:
-      - 'compute'
-      - 'ssh'
-      - 'git-gcp-vm'
-      - '--zone=us-central1-a'
-      - '--project=$PROJECT_ID'
-      - '--command=docker run -d -p 5000:5000 gcr.io/$PROJECT_ID/my-app'
+        gcloud compute scp --recurse /workspace/repo git-gcp-vm:/testfolder/ \
+        --zone=us-central1-a \
+        --project=$PROJECT_ID
 logsBucket: onramp-sample-bucket
