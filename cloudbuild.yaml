@@ -36,7 +36,7 @@ steps:
           echo "Hello World ! Unknown Branch" > /workspace/repo/app.py
         fi
         gcloud builds submit --tag gcr.io/$PROJECT_ID/my-app /workspace/repo
-  - name: 'gcr.io/cloud-builders/google-cloud-sdk'
+  - name: 'google/cloud-sdk'
     entrypoint: 'bash'
     args:
       - '-c'
