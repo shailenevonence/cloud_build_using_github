@@ -23,31 +23,31 @@ steps:
           echo "Hello World ! Unknown Branch" > /workspace/repo/app.py
         fi
         gcloud builds submit --tag gcr.io/$PROJECT_ID/my-app /workspace/repo
-  - name: 'google/cloud-sdk'
+  - name: 'google/cloud-sdk:alpine'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
         gcloud components install docker-credential-gcr docker
-  - name: 'google/cloud-sdk'
+  - name: 'google/cloud-sdk:alpine'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
         gcloud auth configure-docker
-  - name: 'google/cloud-sdk'
+  - name: 'google/cloud-sdk:alpine'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
         gcloud docker -- pull gcr.io/$PROJECT_ID/my-app
-  - name: 'google/cloud-sdk'
+  - name: 'google/cloud-sdk:alpine'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
         gcloud docker -- tag gcr.io/$PROJECT_ID/my-app gcr.io/$PROJECT_ID/my-app:latest
-  - name: 'google/cloud-sdk'
+  - name: 'google/cloud-sdk:alpine'
     entrypoint: 'bash'
     args:
       - '-c'
